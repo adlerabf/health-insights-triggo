@@ -1,5 +1,12 @@
 
-target/
+# Exclude everything in target
+target/*
+
+# Include specific files
+!target/catalog.json
+!target/index.html
+!target/manifest.json
+
 dbt_packages/
 logs/
 # Sensitive files
