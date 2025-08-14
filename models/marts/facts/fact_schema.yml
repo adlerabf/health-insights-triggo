@@ -1,0 +1,67 @@
+version: 2
+
+models:
+  - name: fact_sih_data
+    description: "Fact table containing hospital admissions with references to all dimensions and relevant metrics."
+    columns:
+      - name: admission_id
+        description: "Unique identifier of the hospital admission (from SIH N_AIH)."
+        tests:
+          - not_null
+          - unique
+
+      - name: demographic_key
+        description: "Surrogate key referencing dim_demographics."
+        tests:
+          - not_null
+
+      - name: procedure_key
+        description: "Surrogate key referencing dim_procedure."
+        tests:
+          - not_null
+
+      - name: disease_key
+        description: "Surrogate key referencing dim_disease (ICD code)."
+        tests:
+          - not_null
+
+      - name: patient_location_key
+        description: "Surrogate key referencing patient's city in dim_location."
+        tests:
+          - not_null
+
+      - name: hospital_location_key
+        description: "Surrogate key referencing hospital's city in dim_location."
+        tests:
+          - not_null
+
+      - name: admission_date_key
+        description: "Surrogate key referencing admission date in dim_date."
+        tests:
+          - not_null
+
+      - name: discharge_date_key
+        description: "Surrogate key referencing discharge date in dim_date."
+        tests:
+          - not_null
+
+      - name: length_of_stay
+        description: "Number of days the patient stayed in hospital."
+        tests:
+          - not_null
+          
+      - name: total_cost_brl
+        description: "Total cost of hospital admission in BRL."
+        tests:
+          - not_null
+          
+      - name: total_cost_usd
+        description: "Total cost of hospital admission in USD."
+        tests:
+          - not_null
+
+      - name: death_flag
+        description: "Flag indicating whether the patient died during the hospital stay."
+        tests:
+          - accepted_values:
+              values: ['Yes', 'No']

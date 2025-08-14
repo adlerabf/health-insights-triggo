@@ -1,0 +1,110 @@
+version: 2
+
+models:
+  - name: int_sih_data
+    description: "Cleaned and enriched hospital admission data, joining SIH data with city, procedure, and ICD descriptions."
+    columns:
+      - name: admission_sk
+        description: "Surrogate key for the hospital admission, generated from admission_id, state_code, and admission_date."
+        tests:
+          - not_null
+          - unique
+
+      - name: admission_id
+        description: "Operational identifier for the hospital admission (N_AIH)."
+        tests:
+          - not_null
+
+      - name: state_code
+        description: "State code abbreviation where the hospital admission occurred."
+
+      - name: admission_date
+        description: "Date of hospital admission."
+        tests:
+          - not_null
+
+      - name: discharge_date
+        description: "Date of hospital discharge."
+        tests:
+          - not_null
+
+      - name: length_of_stay
+        description: "Number of days the patient stayed hospitalized."
+        tests:
+          - not_null  
+
+      - name: patient_age
+        description: "Age of the patient at time of admission."
+        tests:
+          - not_null  
+          
+
+      - name: patient_gender
+        description: "Sex of the patient."
+        tests:
+          - accepted_values:
+              values: ['Male', 'Female', 'Unknown']
+
+      - name: patient_id
+        description: "Surrogate key for the patient, generated from patient_age, patient_gender, and patient_city_code."
+        tests:
+          - not_null
+          - unique
+
+      - name: patient_city_code
+        description: "City code where the patient resides."
+
+      - name: patient_city_name
+        description: "City name where the patient resides."
+
+      - name: patient_state_code
+        description: "State code of the patient's residence."
+
+      - name: patient_region_name
+        description: "Region name of the patient's residence."
+
+      - name: hospital_city_code
+        description: "City code where the hospital is located."
+
+      - name: hospital_city_name
+        description: "City name where the hospital is located."
+
+      - name: hospital_state_code
+        description: "State code of the hospital's location."
+
+      - name: hospital_region_name
+        description: "Region name of the hospital's location."
+
+      - name: procedure_code
+        description: "Code of the procedure performed during admission."
+        tests:
+          - not_null
+
+      - name: procedure_name
+        description: "Name of the procedure performed during admission."
+        tests:
+          - not_null
+
+      - name: icd_code
+        description: "ICD code for the principal diagnosis."
+        tests:
+          - not_null
+
+      - name: icd_description
+        description: "Description of the principal ICD diagnosis."
+
+      - name: total_cost_brl
+        description: "Total cost of the hospital admission in BRL."
+        tests:
+          - not_null  
+
+      - name: total_cost_usd
+        description: "Total cost of the hospital admission in USD."
+        tests:
+          - not_null  
+
+      - name: death_flag
+        description: "Indicates if the patient died during the hospital stay."
+        tests:
+          - accepted_values:
+              values: ['Yes', 'No', 'Unknown']

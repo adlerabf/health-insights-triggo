@@ -1,0 +1,181 @@
+version: 2
+
+sources:
+  - name: raw
+    database: HEALTH_INSIGHTS_DB
+    schema: RAW
+    tables:
+      - name: sih_data
+        description: "Hospital Information System (SIH) raw data containing hospital admissions information"
+        columns:
+          - name: N_AIH
+            description: "Authorization number for hospital admission"
+          - name: DT_INTER
+            description: "Admission date"
+          - name: DT_SAIDA
+            description: "Discharge date"
+          - name: IDADE
+            description: "Patient age"
+          - name: SEXO
+            description: "Patient gender"
+          - name: MUNIC_RES
+            description: "Patient's city of residence code (IBGE)"
+          - name: MUNIC_MOV
+            description: "Hospital's city code (IBGE)"
+          - name: VAL_TOT
+            description: "Total cost of hospitalization in BRL"
+          - name: MORTE
+            description: "Death flag indicator"
+          - name: DIAG_PRINC
+            description: "Main diagnosis ICD code"
+          - name: PROC_REA
+            description: "Procedure code performed"
+
+      - name: cities_data
+        description: "Brazilian cities information from IBGE in JSON format"
+        columns:
+          - name: city_id
+            description: "IBGE city identifier"
+          - name: city_name
+            description: "City name"
+          - name: microrregiao
+            description: "JSON object containing geographic hierarchy data"
+
+      - name: procedures_name
+        description: "Medical procedures reference table"
+        columns:
+          - name: procedure_code
+            description: "SUS procedure code"
+          - name: procedure_name
+            description: "Procedure description"
+
+      - name: icd_data
+        description: "International Classification of Diseases (ICD-10) reference table"
+        columns:
+          - name: icd_code
+            description: "ICD-10 code"
+          - name: icd_description
+            description: "Disease or condition description"
+
+models:
+  - name: stg_cities_data
+    description: "Staging table with normalized city information."
+    columns:
+      - name: city_code
+        description: "IBGE's unique identifier for the city."
+        tests:
+          - not_null
+          - unique
+      - name: city_name
+        description: "IBGE's registered name of the city."
+        tests:
+          - not_null
+      - name: state_code
+        description: "State code abbreviation where the city is located."
+      - name: region_name
+        description: "Name of the region where the city is located." 
+        accepted_values: ['North', 'Northeast', 'Central-West', 'Southeast', 'South']
+    
+      
+
+  - name: stg_procedures_name
+    description: "Staging table with procedure names."
+    columns:
+      - name: procedure_code
+        description: "Unique code for each medical procedure."
+        tests:
+          - not_null
+          - unique
+      - name: procedure_name
+        description: "Description of the medical procedure."
+        tests:
+          - not_null
+  - name: stg_icd_data
+    description: "Staging table with ICD codes and descriptions."
+    columns:
+      - name: icd_code
+        description: "Unique code for each ICD entry."
+        tests:
+          - not_null
+          - unique
+      - name: icd_description
+        description: "Description of the ICD code."
+        tests:
+          - not_null
+          
+  - name: stg_sih_data
+    description: "Staging table for SIH data with typing and initial standardization."
+    columns:
+      - name: admission_id
+        description: "Unique identifier for the hospital admission (AIH)."
+        tests:
+          - not_null
+          - unique
+
+      - name: state_code
+        description: "State code where the hospital is located."
+        tests:
+          - not_null
+
+      - name: admission_date
+        description: "Patient's hospital admission date."
+        tests:
+          - not_null
+
+      - name: length_of_stay
+        description: "Number of days the patient stayed in the hospital."
+        tests:
+          - not_null
+
+      - name: discharge_date
+        description: "Patient's hospital discharge date." 
+        tests:
+          - not_null
+
+      - name: patient_city_code
+        description: "City code of the patient's residence (IBGE)."
+        tests:
+          - not_null
+
+      - name: hospital_city_code
+        description: "City code of the hospital where the patient was admitted (IBGE)."
+        tests:
+          - not_null
+
+      - name: patient_age
+        description: "Patient's age in years at the time of admission."
+        tests:
+          - not_null              
+
+      - name: patient_gender
+        description: "Patient's gender."
+        tests:
+          - accepted_values:
+              values: ['Male', 'Female', 'Unknown']
+
+      - name: death_flag
+        description: "Indicates whether the patient died during hospitalization."
+        tests:
+          - accepted_values:
+              values: ['Yes', 'No', 'Unknown']
+
+      - name: icd_code
+        description: "Primary ICD code for the hospitalization."
+        tests:
+          - not_null
+
+      - name: procedure_code
+        description: "Medical procedure code performed during hospitalization."
+        tests:
+          - not_null
+
+      - name: total_cost_brl
+        description: "Total hospitalization cost in BRL."
+        tests:
+          - not_null
+      
+      - name: total_cost_usd
+        description: "Total hospitalization cost in USD, converted from BRL."
+        tests:
+          - not_null
+            

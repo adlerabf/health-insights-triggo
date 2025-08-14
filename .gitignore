@@ -1,0 +1,7 @@
+
+target/
+dbt_packages/
+logs/
+# Sensitive files
+profiles.yml
+dbt_modules/
