@@ -51,7 +51,7 @@ The solution follows a **star schema design**, consisting of a fact table (`fact
 ## How to Run the Project
 
 1. **Run Data Ingestion Notebook**
-   - Ingesting the sih, IBGE and ICD-10 data.
+   - Ingesting the SIH, IBGE and ICD-10 data.
      
 2. **Set up Snowflake**
    - Create database: `health_insights_db`
