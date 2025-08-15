@@ -4,7 +4,7 @@
 
 The **Health Insights Data Warehouse** project is a robust analytics solution designed to process, clean, and model Brazilian hospital admission data (SIH) to support public health insights and financial analysis. This project leverages **dbt** for data transformation and **Snowflake** as the cloud data platform, with integration to **Power BI** for visualization.
 
-## Links
+## Documentation and Presentation
 
 * DBT Docs: [Link](https://adlerabf.github.io/health-insights-triggo/#!/overview)
 * Power BI Dashboard: [Link](https://app.powerbi.com/view?r=eyJrIjoiNDA2NDM3ZTEtYjQxMC00ODcxLThmZTYtZjc2YTJjOGZmMDhmIiwidCI6IjFiYzVlY2E4LTEzNjAtNDhhMy05NWRiLTM5ZmRmNDRiMWEzNiJ9)
